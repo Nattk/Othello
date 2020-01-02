@@ -106,175 +106,116 @@ class Othello extends React.Component {
 
     parcoursCase = (line, col, direction) => {
         let board = this.state.board
-        const caseStatus = board[line][col].status 
+        const caseStatus = board[line][col].status
+        let i,j 
         switch (direction) {
             case 'up':
-            let i = line-1
-            // while(caseStatus !== board[i][col].status && board[i][col].status !== 'vide' && i > this.state.min){
-            //     if(this.state.player === 1)
-            //     board[i][col].status === 
-            // }
-
-             for(let i = line; i > this.state.min; i--){
-                 if( board[i][col].status === "vide"){
-                        board[i][col].jouable = true  
-                        return board 
-                 }
-             }
-                break 
+             i = line-1
+            while(board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide'){
+                if(this.state.player === 1){
+                    board[i][col].status = 'green'
+                }
+                else if(this.state.player === 2){
+                    board[i][col].status = 'red'
+                }
+                i--
+            }
+                break; 
             case 'upLeft':
-                for(let i = line; i > this.state.min; i--){
-                    for (let j = col; j > this.state.min; j--){  
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true 
-                            return board 
-                        }
+                 i = line-1
+                 j = col-1
+                while(board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[i][j].status = 'green'
                     }
+                    else if(this.state.player === 2){
+                        board[i][j].status = 'red'
+                    }
+                    i--
+                    j--
                 }
                 break;
             case 'upRight':
-                for(let i = line; i > this.state.min; i--){
-                    for (let j = col; j < this.state.max; j++){                     
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true  
-                            return board 
-                        }
+                 i = line-1
+                 j = col+1
+                while(board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[i][j].status = 'green'
                     }
+                    else if(this.state.player === 2){
+                        board[i][j].status = 'red'
+                    }
+                    i--
+                    j++
                 }
                 break;         
             case 'down':
-                for(let i = line; i < this.state.max; i++){
-                    if( board[i][col].status === "vide"){
-                           board[i][col].jouable = true   
-                           return board 
-                        }
+                 i = line+1
+                while(board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[i][col].status = 'green'
+                    }
+                    else if(this.state.player === 2){
+                        board[i][col].status = 'red'
+                    }
+                    i++
                 }
                 break;
             case 'downRight':
-                for(let i = line; i < this.state.max; i++){
-                    for (let j = col; j < this.state.max; j++){                     
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true
-                            return board 
-                        }
+                 i = line+1
+                 j = col+1
+                while( board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[i][j].status = 'green'
                     }
+                    else if(this.state.player === 2){
+                        board[i][j].status = 'red'
+                    }
+                    i++
+                    j++
                 }
-        
              break
             case 'downLeft':
-                for(let i = line; i < this.state.max; i++){
-                    for (let j = col; j > this.state.min; j--){                     
-                        if( board[i][j].status === "vide"  ){
-                            board[i][j].jouable = true 
-                            return board 
-                        }
+                 i = line+1
+                 j = col-1
+                while(board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[i][j].status = 'green'
                     }
+                    else if(this.state.player === 2){
+                        board[i][j].status = 'red'
+                    }
+                    i++
+                    j--
                 }
-
                 break;
             case 'left':
-                for(let j = col; j > this.state.min; j--){
-                    if( board[line][j].status === "vide"){
-                           board[line][j].jouable = true 
-                           return board 
-     
-                    }   
+                 j = col-1
+                while(board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[line][j].status = 'green'
+                    }
+                    else if(this.state.player === 2){
+                        board[line][j].status = 'red'
+                    }
+                    j--
                 }
                 break;
             case 'right':
-                for(let j = col; j < this.state.max; j++){
-                    if( board[line][j].status === "vide"){
-                           board[line][j].jouable = true
-                           return board 
-
+                 j = col+1
+                while(board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide'){
+                    if(this.state.player === 1){
+                        board[line][j].status = 'green'
                     }
+                    else if(this.state.player === 2){
+                        board[line][j].status = 'red'
+                    }
+                    j++
                 }
                 break;
             default:
             break;
         } 
-
-
-
-    }
-
-    retournement = (line, col) => {
-        let board = this.state.board
-        const caseStatus = board[line][col].status 
-        const direction = ['up','down','downLeft','downRight','upRight','upLeft','right','left']
-
-        for(const element of direction){
-            this.parcoursCase(element)
-        }
-             for(let i = line; i > this.state.min; i--){
-                 if( board[i][col].status === "vide" || board[i][col].status === caseStatus ){
-                    return board 
-                 }
-                 else{
-
-                 }
-             }
-
-        //upLeft
-                for(let i = line; i > this.state.min; i--){
-                    for (let j = col; j > this.state.min; j--){  
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true 
-                            return board 
-                        }
-                    }
-                }
-        //upRight
-                for(let i = line; i > this.state.min; i--){
-                    for (let j = col; j < this.state.max; j++){                     
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true  
-                            return board 
-                        }
-                    }
-                }
-
-        //down
-                for(let i = line; i < this.state.max; i++){
-                    if( board[i][col].status === "vide"){
-                           board[i][col].jouable = true   
-                           return board 
-                        }
-                }
-        //downRight
-                for(let i = line; i < this.state.max; i++){
-                    for (let j = col; j < this.state.max; j++){                     
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true
-                            return board 
-                        }
-                    }
-                }
-        //downLeft        
-                for(let i = line; i < this.state.max; i++){
-                    for (let j = col; j > this.state.min; j--){                     
-                        if( board[i][j].status === "vide"  ){
-                            board[i][j].jouable = true 
-                            return board 
-                        }
-                    }
-                }
-        //left
-                for(let j = col; j > this.state.min; j--){
-                    if( board[line][j].status === "vide"){
-                           board[line][j].jouable = true 
-                           return board 
-     
-                    }   
-                }
-        //right
-                for(let j = col; j < this.state.max; j++){
-                    if( board[line][j].status === "vide"){
-                           board[line][j].jouable = true
-                           return board 
-
-                    }
-                }
     }
 
     makeArray(cols, rows){
@@ -302,16 +243,23 @@ class Othello extends React.Component {
 
     changeCase = (line, col, jouable) => {
         let board = this.state.board
+        const direction = ['up','down','downLeft','downRight','upRight','upLeft','right','left']
         if(this.state.player === 1 && jouable ) {
             board[line][col].status = 'green'
             this.setState({board : board})
-            this.cleanBoard(line,col)
+            this.cleanBoard()
+            for(const element of direction){
+                this.parcoursCase(line, col, element)
+            }
 
         }
         else if(this.state.player === 2 && jouable){
             board[line][col].status = 'red'
             this.setState({board : board})
-            this.cleanBoard(line,col)
+            this.cleanBoard()
+            for(const element of direction){
+               this.parcoursCase(line, col, element)
+            }
         }
         if(this.state.player === 1 ){
             this.setState({ player: 2 },()=> {
