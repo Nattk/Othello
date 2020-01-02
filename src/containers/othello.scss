@@ -1,0 +1,23 @@
+.lines {
+    display: flex;
+    flex-direction: row;
+}
+
+.squares {
+    width: 5rem;
+    height: 5rem;
+    border: 0.2rem solid black;
+    cursor: pointer;
+
+    &.jouable {
+        background-color: rgb(178, 178, 224);
+    }
+
+    &.red {
+        background-color: red;
+    }
+
+    &.green {
+        background-color: green;
+    }
+}
