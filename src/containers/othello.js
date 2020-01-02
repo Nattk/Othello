@@ -14,14 +14,14 @@ class Othello extends React.Component {
     }
 
     componentDidUpdate(previousProps, previousState){
-        if (previousState.board !== this.state.board) {
-           console.log('playableSquare')
-           this.playableSquare()
-        }    
+        // if (previousState.board !== this.state.board) {
+        //    this.playableSquare()
+        // }    
     }
 
-    foundPlayable = (line, col, direction, status) => {    
-        let board = this.state.board         
+    foundPlayable = (line, col, direction) => {    
+        let board = this.state.board
+        let caseStatus = board[line][col].status      
         switch (direction) {
             case 'up':
              for(let i = line; i > this.state.min; i--){
@@ -91,11 +91,11 @@ class Othello extends React.Component {
                 }
                 break;
             case 'right':
+                //fonction de recherche opposé 
                 for(let j = col; j < this.state.max; j++){
-                    if( board[line][j].status === "vide"){
+                    if(board[line][j].status === "vide"){
                            board[line][j].jouable = true
                            return board 
-
                     }
                 }
                 break;
@@ -105,7 +105,7 @@ class Othello extends React.Component {
     }
 
     parcoursCase = (line, col, direction) => {
-        let board = this.state.board
+        let board = [...this.state.board]
         const caseStatus = board[line][col].status
         let i,j 
         switch (direction) {
@@ -120,7 +120,7 @@ class Othello extends React.Component {
                 }
                 i--
             }
-                break; 
+                return board
             case 'upLeft':
                  i = line-1
                  j = col-1
@@ -134,7 +134,7 @@ class Othello extends React.Component {
                     i--
                     j--
                 }
-                break;
+                return board
             case 'upRight':
                  i = line-1
                  j = col+1
@@ -148,7 +148,7 @@ class Othello extends React.Component {
                     i--
                     j++
                 }
-                break;         
+                return board
             case 'down':
                  i = line+1
                 while(board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide'){
@@ -160,7 +160,7 @@ class Othello extends React.Component {
                     }
                     i++
                 }
-                break;
+                return board
             case 'downRight':
                  i = line+1
                  j = col+1
@@ -174,7 +174,7 @@ class Othello extends React.Component {
                     i++
                     j++
                 }
-             break
+                return board
             case 'downLeft':
                  i = line+1
                  j = col-1
@@ -188,7 +188,7 @@ class Othello extends React.Component {
                     i++
                     j--
                 }
-                break;
+                return board
             case 'left':
                  j = col-1
                 while(board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide'){
@@ -200,7 +200,7 @@ class Othello extends React.Component {
                     }
                     j--
                 }
-                break;
+                return board
             case 'right':
                  j = col+1
                 while(board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide'){
@@ -212,7 +212,7 @@ class Othello extends React.Component {
                     }
                     j++
                 }
-                break;
+                return board
             default:
             break;
         } 
@@ -249,7 +249,11 @@ class Othello extends React.Component {
             this.setState({board : board})
             this.cleanBoard()
             for(const element of direction){
-                this.parcoursCase(line, col, element)
+                this.setState({board : this.parcoursCase(line, col, element)},()=>{
+                    this.setState({ player: 2 },()=> {
+                        this.playableSquare()
+                    });   
+                })
             }
 
         }
@@ -258,23 +262,13 @@ class Othello extends React.Component {
             this.setState({board : board})
             this.cleanBoard()
             for(const element of direction){
-               this.parcoursCase(line, col, element)
+                this.setState({board : this.parcoursCase(line, col, element)},()=>{
+                    this.setState({ player: 1 },()=> {
+                        this.playableSquare()
+                    });                
+                })
             }
         }
-        if(this.state.player === 1 ){
-            this.setState({ player: 2 },()=> {
-                this.playableSquare()
-            });
-
-        }
-
-        if(this.state.player === 2 ){
-            this.setState({ player: 1 },()=> {
-                this.playableSquare()
-            });
-
-        } 
-
     }
 
     cleanBoard = () => {
@@ -305,6 +299,7 @@ class Othello extends React.Component {
 
     playableSquare = () =>{
         let board = this.state.board
+        console.log(this.state.player)
         const squaresObj = []
             for (let i = 0, length = board.length; i<length; i++){
                 for (let j = 0, length = board[i].length; j<length; j++){
@@ -316,10 +311,11 @@ class Othello extends React.Component {
                     }
                 }
     }
-
+    console.log(squaresObj)
     squaresObj.forEach( element => {
         for (let [pos , value, line, col] of Object.values(this.adjacentCase(element.line, element.col))) {
             if(element.status !== value.status && value.status !== 'vide'){
+                console.log(value)
                 board = this.foundPlayable(line, col, pos, element.status)
             }
           }
