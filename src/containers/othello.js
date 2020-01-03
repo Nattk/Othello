@@ -462,6 +462,7 @@ class Othello extends React.Component {
     render () {
       return (
         <section>
+          <h1>Othello MultiJoueur</h1>
           <aside>
             <p>Joueur 1 :{this.state.player1}</p>
             <p>Joueur 2 :{this.state.player2}</p>
@@ -469,7 +470,7 @@ class Othello extends React.Component {
           {this.state.board.map((lines, indexLine) => (
             <div key={indexLine} className="lines">
               {lines.map((square, indexSquare) => (
-                <div key={`${indexLine}${indexSquare}`} className={`squares ${square.status} ${square.jouable ? 'jouable' : ''} `} onClick={() => this.changeCase(indexLine, indexSquare, square.jouable)}>{indexLine} {indexSquare}</div>
+                <div key={`${indexLine}${indexSquare}`} className={`squares ${square.status} ${square.jouable ? 'jouable' : ''} `} onClick={() => this.changeCase(indexLine, indexSquare, square.jouable)}></div>
               ))}
             </div>
           ))}

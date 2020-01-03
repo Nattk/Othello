@@ -3,10 +3,15 @@
     flex-direction: row;
 }
 
+h1{
+    font-family: 'Patua One', cursive;
+}
+
 .squares {
     width: 5rem;
     height: 5rem;
     border: 0.2rem solid black;
+    background-color: green;
     cursor: pointer;
 
     &.jouable {
@@ -14,10 +19,14 @@
     }
 
     &.red {
-        background-color: red;
+        background-image: url('../assets/images/pieceWhite.png'); 
+        background-repeat: no-repeat;
+        background-position: center;
     }
 
     &.green {
-        background-color: green;
+        background-image: url('../assets/images/pieceBlack.png'); 
+        background-repeat: no-repeat;
+        background-position: center;
     }
 }
