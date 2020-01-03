@@ -8,7 +8,8 @@ class Othello extends React.Component {
       max: 8,
       min: -1,
       player1: '',
-      player2: ''
+      player2: '',
+      canPlay: true
     }
 
     componentDidMount () {
@@ -20,6 +21,21 @@ class Othello extends React.Component {
       if (previousState.board !== this.state.board) {
         this.playableSquare()
         this.score()
+      }
+    }
+
+    canPlay = () => {
+      const board = this.state.board
+      const squares = []
+      for (let i = 0, length = board.length; i < length; i++) {
+        for (let j = 0, length = board[i].length; j < length; j++) {
+          if (board[i][j].jouable) {
+            squares.push(board[i][j])
+          }
+        }
+      }
+      if (!squares.length) {
+        this.setState({ canPlay: false })
       }
     }
 
@@ -439,6 +455,7 @@ class Othello extends React.Component {
         }
       })
       this.setState({ board: board }, () => {
+        this.canPlay()
       })
     }
 
