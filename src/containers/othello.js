@@ -6,17 +6,37 @@ class Othello extends React.Component {
       board: this.makeArray(8, 8),
       player: 1,
       max: 8,
-      min: -1
+      min: -1,
+      player1: '',
+      player2: ''
     }
 
     componentDidMount () {
       this.playableSquare()
+      this.score()
     }
 
     componentDidUpdate (previousProps, previousState) {
       if (previousState.board !== this.state.board) {
         this.playableSquare()
+        this.score()
       }
+    }
+
+    score = () => {
+      const board = this.state.board
+      let green = 0; let red = 0
+      for (let i = 0, length = board.length; i < length; i++) {
+        for (let j = 0, length = board[i].length; j < length; j++) {
+          if (board[i][j].status === 'green') {
+            green = green + 1
+          } else if (board[i][j].status === 'red') {
+            red = red + 1
+          }
+        }
+      }
+      this.setState({ player1: green })
+      this.setState({ player2: red })
     }
 
     foundPlayable = (line, col, direction, status) => {
@@ -64,7 +84,6 @@ class Othello extends React.Component {
           while (line < this.state.max && col < this.state.max && board[line][col].status !== status) {
             if (board[line][col].status === 'vide') {
               board[line][col].jouable = true
-              console.log(board)
               return board
             }
             line++
@@ -354,6 +373,7 @@ class Othello extends React.Component {
           this.setState({ board: this.parcoursCase(line, col, element) }, () => {
             this.setState({ player: 2 }, () => {
               this.playableSquare()
+              this.score()
             })
           })
         }
@@ -366,6 +386,7 @@ class Othello extends React.Component {
           this.setState({ board: this.parcoursCase(line, col, element) }, () => {
             this.setState({ player: 1 }, () => {
               this.playableSquare()
+              this.score()
             })
           })
         }
@@ -414,7 +435,6 @@ class Othello extends React.Component {
         for (const [pos, value, line, col] of Object.values(this.adjacentCase(element.line, element.col))) {
           if (value && element.status !== value.status && value.status !== 'vide') {
             board = this.foundPlayable(line, col, pos, element.status)
-            console.log(board)
           }
         }
       })
@@ -424,15 +444,19 @@ class Othello extends React.Component {
 
     render () {
       return (
-        <div>
+        <section>
+          <aside>
+            <p>Joueur 1 :{this.state.player1}</p>
+            <p>Joueur 2 :{this.state.player2}</p>
+          </aside>
           {this.state.board.map((lines, indexLine) => (
-            <div className="lines">
+            <div key={indexLine} className="lines">
               {lines.map((square, indexSquare) => (
-                <div className={`squares ${square.status} ${square.jouable ? 'jouable' : ''} `} onClick={() => this.changeCase(indexLine, indexSquare, square.jouable)}>{indexLine} {indexSquare}</div>
+                <div key={`${indexLine}${indexSquare}`} className={`squares ${square.status} ${square.jouable ? 'jouable' : ''} `} onClick={() => this.changeCase(indexLine, indexSquare, square.jouable)}>{indexLine} {indexSquare}</div>
               ))}
             </div>
           ))}
-        </div>
+        </section>
       )
     }
 }
