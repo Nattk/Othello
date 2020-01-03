@@ -64,6 +64,7 @@ class Othello extends React.Component {
           while (line < this.state.max && col < this.state.max && board[line][col].status !== status) {
             if (board[line][col].status === 'vide') {
               board[line][col].jouable = true
+              console.log(board)
               return board
             }
             line++
@@ -99,111 +100,99 @@ class Othello extends React.Component {
           }
           break
         default:
-          break
+          return board
       }
+      return board
     }
 
     checkIfReturn = (line, col, direction) => {
       const board = this.state.board
-      let i, j
       let shouldChange = false
       if (this.state.max > line && line > this.state.min && this.state.max > col && col > this.state.min) {
         const status = board[line][col].status
         switch (direction) {
           case 'up':
             shouldChange = false
-            i = line
-            while (board[i][col] && board[i][col].status !== 'vide') {
-              if (board[i][col].status !== status) {
+            while (line > this.state.min && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              i--
+              line--
             }
             return shouldChange
           case 'upLeft':
             shouldChange = false
-            i = line
-            j = col
-            while (board[i][j] && board[i][j].status !== 'vide') {
-              if (board[i][j].status !== status) {
+            while (line > this.state.min && col > this.state.min && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              i--
-              j--
+              line--
+              col--
             }
             return shouldChange
           case 'upRight':
             shouldChange = false
-            i = line
-            j = col
-            while (board[i][j] && board[i][j].status !== 'vide') {
-              if (board[i][j].status !== status) {
+            while (line > this.state.min && col < this.state.max && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              i--
-              j++
+              line--
+              col++
             }
             return shouldChange
           case 'down':
             shouldChange = false
-            i = line
-            while (board[i][col] && board[i][col].status !== 'vide') {
-              if (board[i][col].status !== status) {
+            while (line < this.state.max && board[line][col] && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              i++
+              line++
             }
             return shouldChange
           case 'downRight':
             shouldChange = false
-            i = line
-            j = col
-            while (board[i][j] && board[i][j].status !== 'vide') {
-              if (board[i][j].status !== status) {
+            while (line < this.state.max && col < this.state.max && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              i++
-              j++
+              line++
+              col++
             }
             return shouldChange
           case 'downLeft':
             shouldChange = false
-            i = line
-            j = col
-            while (board[i][j] && board[i][j].status !== 'vide') {
-              if (board[i][j].status !== status) {
+            while (line < this.state.max && col > this.state.min && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              i++
-              j--
+              line++
+              col--
             }
             return shouldChange
           case 'left':
             shouldChange = false
-            j = col
-            while (board[line][j].status !== 'vide' && board[line][j]) {
-              if (board[line][j].status !== status) {
+            while (col > this.state.min && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              j--
+              col--
             }
             return shouldChange
           case 'right':
             shouldChange = false
-            j = col
-            while (board[line][j] && board[line][j].status !== 'vide') {
-              if (board[line][j].status !== status) {
+            while (col < this.state.max && board[line][col].status !== 'vide') {
+              if (board[line][col].status !== status) {
                 shouldChange = true
                 return shouldChange
               }
-              j++
+              col++
             }
             return shouldChange
           default:
@@ -425,12 +414,11 @@ class Othello extends React.Component {
         for (const [pos, value, line, col] of Object.values(this.adjacentCase(element.line, element.col))) {
           if (value && element.status !== value.status && value.status !== 'vide') {
             board = this.foundPlayable(line, col, pos, element.status)
+            console.log(board)
           }
         }
       })
-
       this.setState({ board: board }, () => {
-        console.log(this.state.board)
       })
     }
 
