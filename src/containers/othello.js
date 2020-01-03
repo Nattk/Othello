@@ -1,5 +1,7 @@
 import React from 'react'
 import './othello.scss'
+import black from '../assets/images/pieceBlack.png'
+import white from '../assets/images/pieceWhite.png'
 
 class Othello extends React.Component {
     state = {
@@ -22,6 +24,10 @@ class Othello extends React.Component {
         this.playableSquare()
         this.score()
       }
+    }
+
+    endGame = () => {
+      // EndGame Function
     }
 
     canPlay = () => {
@@ -421,6 +427,14 @@ class Othello extends React.Component {
       this.setState({ board: board })
     }
 
+    changePlayer = () => {
+      if (this.state.player === 1) {
+        this.setState({ player: 2 })
+      } else {
+        this.setState({ player: 1 })
+      }
+    }
+
     adjacentCase = (line, col) => {
       const board = this.state.board
       return {
@@ -475,8 +489,11 @@ class Othello extends React.Component {
               ))}
             </section>
             <aside>
-              <p>Joueur 1 :{this.state.player1}</p>
-              <p>Joueur 2 :{this.state.player2}</p>
+              <p>Joueur 1 :{this.state.player1} {this.state.player === 1 && <img src={black} alt=""/>}</p>
+              {this.state.canPlay === false &&
+                <p onClick={this.changePlayer}>Passer le tour</p>
+              }
+              <p>Joueur 2 :{this.state.player2} {this.state.player === 2 && <img src={white} alt=""/>}</p>
             </aside>
           </div>
         </section>
