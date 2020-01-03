@@ -19,83 +19,83 @@ class Othello extends React.Component {
         }    
     }
 
-    foundPlayable = (line, col, direction) => {    
+    foundPlayable = (line, col, direction, status) => {    
         let board = this.state.board
-        let caseStatus = board[line][col].status
-        let opposite = false 
         switch (direction) {
             case 'up':
-             for(let i = line; i > this.state.min; i--){
-                 if( board[i][col].status === "vide"){
-                        board[i][col].jouable = true  
-                        return board 
-                 }
-             }
+            while(board[line][col] && board[line][col].status !== status ){
+                if(board[line][col].status === "vide" ){
+                    board[line][col].jouable = true
+                    return board  
+                }                   
+                line--
+            }
                 break 
             case 'upLeft':
-                for(let i = line; i > this.state.min; i--){
-                    for (let j = col; j > this.state.min; j--){  
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true 
-                            return board 
-                        }
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board 
                     }
+                    line--
+                    col--
                 }
                 break;
             case 'upRight':
-                for(let i = line; i > this.state.min; i--){
-                    for (let j = col; j < this.state.max; j++){                     
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true  
-                            return board 
-                        }
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board                     
                     }
+                    line--
+                    col++
                 }
                 break;         
             case 'down':
-                for(let i = line; i < this.state.max; i++){
-                    if( board[i][col].status === "vide"){
-                           board[i][col].jouable = true  
-                           return board 
-                        }
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board  
+                    }                   
+                    line++
                 }
                 break;
             case 'downRight':
-                for(let i = line; i < this.state.max; i++){
-                    for (let j = col; j < this.state.max; j++){                     
-                        if( board[i][j].status === "vide"){
-                            board[i][j].jouable = true
-                            return board 
-                        }
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board                    
                     }
+                    line++
+                    col++
                 }
-        
                 break;
             case 'downLeft':
-                for(let i = line; i < this.state.max; i++){
-                    for (let j = col; j > this.state.min; j--){                     
-                        if( board[i][j].status === caseStatus ){
-                            board[i][j].jouable = true 
-                            return board 
-                        }
-                    }
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board                    
                 }
-
+                    line++
+                    col--
+                }
                 break;
             case 'left':
-                for(let j = col; j > this.state.min; j--){
-                    if( board[line][j].status === "vide"){
-                           board[line][j].jouable = true 
-                           return board 
-                    }   
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board  
+                    }                   
+                    col--
                 }
                 break;
             case 'right':
-                for(let j = col; j < this.state.max; j++){
-                    if(board[line][j].status === "vide" && opposite === false){
-                           board[line][j].jouable = true
-                           return board 
-                    }
+                while(board[line][col] && board[line][col].status !== status ){
+                    if(board[line][col].status === "vide" ){
+                        board[line][col].jouable = true
+                        return board  
+                    }                   
+                    col++
                 }
                 break;
             default:
@@ -420,6 +420,7 @@ class Othello extends React.Component {
     squaresObj.forEach( element => {
         for (let [pos , value, line, col] of Object.values(this.adjacentCase(element.line, element.col))) {
             if(element.status !== value.status && value.status !== 'vide'){
+                console.log(element)
                 board = this.foundPlayable(line, col, pos, element.status)
             }
           }
