@@ -41,18 +41,18 @@ class Othello extends React.Component {
 
     score = () => {
       const board = this.state.board
-      let green = 0; let red = 0
+      let white = 0; let black = 0
       for (let i = 0, length = board.length; i < length; i++) {
         for (let j = 0, length = board[i].length; j < length; j++) {
-          if (board[i][j].status === 'green') {
-            green = green + 1
-          } else if (board[i][j].status === 'red') {
-            red = red + 1
+          if (board[i][j].status === 'white') {
+            white = white + 1
+          } else if (board[i][j].status === 'black') {
+            black = black + 1
           }
         }
       }
-      this.setState({ player1: green })
-      this.setState({ player2: red })
+      this.setState({ player1: white })
+      this.setState({ player2: black })
     }
 
     foundPlayable = (line, col, direction, status) => {
@@ -250,9 +250,9 @@ class Othello extends React.Component {
             for (i; i < this.state.min; i++) {
             }
             if (this.state.player === 1) {
-              board[i][col].status = 'green'
+              board[i][col].status = 'white'
             } else if (this.state.player === 2) {
-              board[i][col].status = 'red'
+              board[i][col].status = 'black'
             }
             i--
           }
@@ -263,9 +263,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(i, j, direction)
           while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
-              board[i][j].status = 'green'
+              board[i][j].status = 'white'
             } else if (this.state.player === 2) {
-              board[i][j].status = 'red'
+              board[i][j].status = 'black'
             }
             i--
             j--
@@ -277,9 +277,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(i, j, direction)
           while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
-              board[i][j].status = 'green'
+              board[i][j].status = 'white'
             } else if (this.state.player === 2) {
-              board[i][j].status = 'red'
+              board[i][j].status = 'black'
             }
             i--
             j++
@@ -290,9 +290,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(i, col, direction)
           while (shouldChange && board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide') {
             if (this.state.player === 1) {
-              board[i][col].status = 'green'
+              board[i][col].status = 'white'
             } else if (this.state.player === 2) {
-              board[i][col].status = 'red'
+              board[i][col].status = 'black'
             }
             i++
           }
@@ -303,9 +303,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(i, j, direction)
           while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
-              board[i][j].status = 'green'
+              board[i][j].status = 'white'
             } else if (this.state.player === 2) {
-              board[i][j].status = 'red'
+              board[i][j].status = 'black'
             }
             i++
             j++
@@ -317,9 +317,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(i, j, direction)
           while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
-              board[i][j].status = 'green'
+              board[i][j].status = 'white'
             } else if (this.state.player === 2) {
-              board[i][j].status = 'red'
+              board[i][j].status = 'black'
             }
             i++
             j--
@@ -330,9 +330,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(line, j, direction)
           while (shouldChange && board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide') {
             if (this.state.player === 1) {
-              board[line][j].status = 'green'
+              board[line][j].status = 'white'
             } else if (this.state.player === 2) {
-              board[line][j].status = 'red'
+              board[line][j].status = 'black'
             }
             j--
           }
@@ -342,9 +342,9 @@ class Othello extends React.Component {
           shouldChange = this.checkIfReturn(line, j, direction)
           while (shouldChange && board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide') {
             if (this.state.player === 1) {
-              board[line][j].status = 'green'
+              board[line][j].status = 'white'
             } else if (this.state.player === 2) {
-              board[line][j].status = 'red'
+              board[line][j].status = 'black'
             }
             j++
           }
@@ -360,9 +360,9 @@ class Othello extends React.Component {
         arr[i] = new Array(rows)
         for (let j = 0, length = arr[i].length; j < length; j++) {
           if (i === 3 && j === 3 || i === 4 && j === 4) {
-            arr[i][j] = { status: 'red', jouable: false }
+            arr[i][j] = { status: 'black', jouable: false }
           } else if (i === 4 && j === 3 || i === 3 && j === 4) {
-            arr[i][j] = { status: 'green', jouable: false }
+            arr[i][j] = { status: 'white', jouable: false }
           } else {
             arr[i][j] = { status: 'vide', jouable: false }
           }
@@ -382,7 +382,7 @@ class Othello extends React.Component {
       const board = this.state.board
       const direction = ['up', 'down', 'downLeft', 'downRight', 'upRight', 'upLeft', 'right', 'left']
       if (this.state.player === 1 && jouable) {
-        board[line][col].status = 'green'
+        board[line][col].status = 'white'
         this.setState({ board: board })
         this.cleanBoard()
         for (const element of direction) {
@@ -394,7 +394,7 @@ class Othello extends React.Component {
           })
         }
       } else if (this.state.player === 2 && jouable) {
-        board[line][col].status = 'red'
+        board[line][col].status = 'black'
         this.setState({ board: board }, () => {
         })
         this.cleanBoard()
@@ -440,9 +440,9 @@ class Othello extends React.Component {
       const squaresObj = []
       for (let i = 0, length = board.length; i < length; i++) {
         for (let j = 0, length = board[i].length; j < length; j++) {
-          if (this.state.player === 2 && board[i][j].status === 'red') {
+          if (this.state.player === 2 && board[i][j].status === 'black') {
             squaresObj.push({ status: board[i][j].status, line: i, col: j })
-          } else if (this.state.player === 1 && board[i][j].status === 'green') {
+          } else if (this.state.player === 1 && board[i][j].status === 'white') {
             squaresObj.push({ status: board[i][j].status, line: i, col: j })
           }
         }
@@ -461,19 +461,24 @@ class Othello extends React.Component {
 
     render () {
       return (
-        <section>
+        <section className="othello">
           <h1>Othello MultiJoueur</h1>
-          <aside>
-            <p>Joueur 1 :{this.state.player1}</p>
-            <p>Joueur 2 :{this.state.player2}</p>
-          </aside>
-          {this.state.board.map((lines, indexLine) => (
-            <div key={indexLine} className="lines">
-              {lines.map((square, indexSquare) => (
-                <div key={`${indexLine}${indexSquare}`} className={`squares ${square.status} ${square.jouable ? 'jouable' : ''} `} onClick={() => this.changeCase(indexLine, indexSquare, square.jouable)}></div>
+          <div className="game">
+            <section className="board">
+              <h2>Jeux</h2>
+              {this.state.board.map((lines, indexLine) => (
+                <div key={indexLine} className="lines">
+                  {lines.map((square, indexSquare) => (
+                    <div key={`${indexLine}${indexSquare}`} className={`squares ${square.status} ${square.jouable ? 'jouable' : ''} `} onClick={() => this.changeCase(indexLine, indexSquare, square.jouable)}></div>
+                  ))}
+                </div>
               ))}
-            </div>
-          ))}
+            </section>
+            <aside>
+              <p>Joueur 1 :{this.state.player1}</p>
+              <p>Joueur 2 :{this.state.player2}</p>
+            </aside>
+          </div>
         </section>
       )
     }

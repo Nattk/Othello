@@ -1,3 +1,19 @@
+.othello {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.game{
+    display:flex;
+    flex-direction: row;
+
+    .board{
+        display:flex;
+        flex-direction: column;
+    }
+
+}
 .lines {
     display: flex;
     flex-direction: row;
@@ -8,8 +24,8 @@ h1{
 }
 
 .squares {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     border: 0.2rem solid black;
     background-color: green;
     cursor: pointer;
@@ -18,13 +34,13 @@ h1{
         background-color: rgb(178, 178, 224);
     }
 
-    &.red {
+    &.black {
         background-image: url('../assets/images/pieceWhite.png'); 
         background-repeat: no-repeat;
         background-position: center;
     }
 
-    &.green {
+    &.white {
         background-image: url('../assets/images/pieceBlack.png'); 
         background-repeat: no-repeat;
         background-position: center;
