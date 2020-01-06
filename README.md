@@ -1,8 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
-
-Danse le projet vous pouvez lancer
+Dans le projet vous pouvez lancer
 
 ### `npm start`
 
