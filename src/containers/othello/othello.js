@@ -30,6 +30,7 @@ class Othello extends React.Component {
 
     pass = () => {
       if (this.state.player === 1) {
+        this.cleanBoard()
         this.setState({ player: 2 }, () => {
           axios.put(`${this.state.endpoint}/pass-game`, {
             id: this.state.gameId,
@@ -37,6 +38,7 @@ class Othello extends React.Component {
           })
         })
       } else {
+        this.cleanBoard()
         this.setState({ player: 1 }, () => {
           axios.put(`${this.state.endpoint}/pass-game`, {
             id: this.state.gameId,
@@ -58,6 +60,8 @@ class Othello extends React.Component {
             socket.on('updateGame', (data) => {
               this.setState({ board: data.gameBoard })
               this.setState({ player: parseInt(data.isPlaying) })
+              this.cleanBoard()
+              this.playableSquare()
               this.score()
             })
           })
@@ -66,7 +70,6 @@ class Othello extends React.Component {
 
     componentDidUpdate (previousProps, previousState) {
       if (previousState.board !== this.state.board) {
-        console.log('change')
       }
     }
 
@@ -458,7 +461,6 @@ class Othello extends React.Component {
               }).then(() => {
               }).catch((error) => {
                 if (axios.isCancel(error)) {
-                  console.log('post Request canceled')
                 }
               })
             })
@@ -491,7 +493,6 @@ class Othello extends React.Component {
               }).then((response) => {
               }).catch((error) => {
                 if (axios.isCancel(error)) {
-                  console.log('post Request canceled')
                 }
               })
             })
