@@ -1,10 +1,10 @@
 import React from 'react'
-import GameListCard from './gameListCard'
+import Spinner from './spinner'
 import TestUtils from 'react-dom/test-utils'
 
 describe(' GameListCard ', function () {
   it('should Render', function () {
-    const component = <GameListCard/>
+    const component = <Spinner/>
     expect(TestUtils.isElement(component)).toBe(true)
   })
 })
