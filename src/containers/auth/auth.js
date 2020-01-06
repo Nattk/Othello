@@ -48,7 +48,7 @@ class Auth extends React.Component {
             <section className="form">
               <h2>Inscription</h2>
               <form>
-                <label htmlFor='username'>Nom d'utilisateur</label>
+                <label htmlFor='username'>Nom d&apos;utilisateur</label>
                 <input id="username" type="text" placeholder="username" name="username" onChange={(event) => this.change(event)}/>
                 <label htmlFor='password'>Mot de passe</label>
                 <input id="password" type="password" placeholder="Mot de passe" name="password" onChange={(event) => this.change(event)}/>
