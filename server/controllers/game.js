@@ -38,7 +38,6 @@ exports.updateGame = (req, res, next) => {
       return game.save()
     })
     .then(game => {
-      console.log('saved')
       io.getIo().of(`/${game._id}`)
         .emit('updateGame', game)
     })
@@ -69,7 +68,6 @@ exports.addGuest = (req, res, next) => {
       return game.save()
     })
     .then(game => {
-      console.log(io.getIo())
       io.getIo().of(`/${idGame}`)
         .emit('guest', game.guest)
       res.send(game)
