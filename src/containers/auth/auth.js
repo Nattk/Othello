@@ -14,7 +14,6 @@ class Auth extends React.Component {
         .then(user => {
           console.log(user)
           localStorage.setItem('userId', user.data)
-          // eslint-disable-next-line react/prop-types
           this.props.history.push('/list')
         })
         .catch(err => {
@@ -26,7 +25,6 @@ class Auth extends React.Component {
       axios.post(`${this.state.endpoint}/signup`, { username: this.state.username, password: this.state.password })
         .then(user => {
           localStorage.setItem('userId', user.data)
-          // eslint-disable-next-line react/prop-types
           this.props.history.push('/list')
         })
         .catch(err => {
@@ -47,27 +45,23 @@ class Auth extends React.Component {
         <article className="auth">
           <h1 className="align-self-center">Othello MultiPLayer</h1>
           <div className="input-wrapper">
-            <section >
+            <section className="form">
               <h2>Inscription</h2>
-              <form method="post">
-                <div className="form-group">
-                  <label htmlFor='username'>Nom d'utilisateur</label>
-                  <input id="username" type="text" placeholder="username" name="username" onChange={(event) => this.change(event)}/>
-                  <label htmlFor='password'>Mot de passe</label>
-                  <input id="password" type="password" placeholder="Mot de passe" name="password" onChange={(event) => this.change(event)}/>
-                </div>
+              <form>
+                <label htmlFor='username'>Nom d'utilisateur</label>
+                <input id="username" type="text" placeholder="username" name="username" onChange={(event) => this.change(event)}/>
+                <label htmlFor='password'>Mot de passe</label>
+                <input id="password" type="password" placeholder="Mot de passe" name="password" onChange={(event) => this.change(event)}/>
               </form>
               <button onClick={this.signUp}>Inscription</button>
             </section>
             <section>
               <h2>Connexion</h2>
-              <form method="post">
-                <div className="form-group">
-                  <label htmlFor='username'>Nom d&apos;utilisateur</label>
-                  <input id="username" type="text" placeholder="username" name="username" onChange={(event) => this.change(event)}/>
-                  <label htmlFor='password'>Mot de passe</label>
-                  <input id="password" type="password" name="password" placeholder="Mot de passe" onChange={(event) => this.change(event)}/>
-                </div>
+              <form>
+                <label htmlFor='username'>Nom d&apos;utilisateur</label>
+                <input id="username" type="text" placeholder="username" name="username" onChange={(event) => this.change(event)}/>
+                <label htmlFor='password'>Mot de passe</label>
+                <input id="password" type="password" name="password" placeholder="Mot de passe" onChange={(event) => this.change(event)}/>
               </form>
               <button onClick={this.login}>Connexion</button>
 

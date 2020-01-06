@@ -2,11 +2,23 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
+
+    h1{
+        text-align: center;
+    }
 }
 
 .game {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+        
+    .playersInfo {
+        img{
+            width: 1rem;
+        }
+    }
 
     .board {
         display: flex;

@@ -7,6 +7,7 @@ import socketIOClient from 'socket.io-client'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 
+// Cancel Token for cancelling Multiple axios request
 const CancelToken = axios.CancelToken
 let cancelRequest
 
@@ -575,7 +576,7 @@ class Othello extends React.Component {
             <h1>Othello MultiJoueur</h1>
             <div className="game">
               <section className="board">
-                <h2>Jeux</h2>
+                <h2>Partie créé par {this.state.creator.username}</h2>
                 {this.state.board.map((lines, indexLine) => (
                   <div key={indexLine} className="lines">
                     {lines.map((square, indexSquare) => (
@@ -584,10 +585,10 @@ class Othello extends React.Component {
                   </div>
                 ))}
               </section>
-              <aside>
+              <aside className = "playersInfo">
                 <p>{this.state.engame && 'game over'}</p>
                 <p>{this.state.creator.username}:{this.state.player1} {this.state.player === 1 && <img src={black} alt=""/>}</p>
-                <p onClick={this.pass}>Passer le tour</p>
+                <button onClick={this.pass}>Passer le tour</button>
                 <p>Joueur 2 :{this.state.player2} {this.state.player === 2 && <img src={white} alt=""/>}</p>
               </aside>
             </div>

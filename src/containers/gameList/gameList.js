@@ -3,6 +3,7 @@ import axios from 'axios'
 import GameListCard from '../../components/gameListCard/gameListCard'
 import Spinner from '../../components/ui/spinner'
 import makeGameBoard from '../../utils/game/makeGameBoard'
+import './gameList.scss'
 
 class GameList extends React.Component {
     state = {
@@ -21,7 +22,6 @@ class GameList extends React.Component {
           return axios.get(`${this.state.endpoint}/get-user/${userId}`)
         })
         .then(user => {
-          console.log(user)
           this.setState({ username: user.data, loaded: true })
         })
         .catch(err => {
@@ -50,7 +50,6 @@ class GameList extends React.Component {
         userId: localStorage.getItem('userId')
       })
         .then(game => {
-          // eslint-disable-next-line react/prop-types
           this.props.history.push({
             pathname: '/othello',
             search: `?id=${encodeURIComponent(game.data)}`
@@ -62,12 +61,12 @@ class GameList extends React.Component {
       let gameList = null
       if (this.state.loaded) {
         gameList = (
-          <section>
-            <h1>Liste des jeux </h1>
+          <section className="gameList">
+            <h1>Liste des jeux en cours</h1>
             <p>Bienvenue {this.state.username}</p>
             <button onClick={this.createGame}>Créer une partie</button>
             {this.state.games.map((game, index) => (
-              <GameListCard key={game._id} title={index} clicked={() => this.goToGame(game._id)}/>
+              <GameListCard key={game._id} title={`Partie N°${index}`} creator={game.createdBy.username} clicked={() => this.goToGame(game._id)}/>
             ))}
           </section>
         )
