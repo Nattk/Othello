@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom'
 
 const CancelToken = axios.CancelToken
 let cancelRequest
-let socket
 
 class Othello extends React.Component {
     state = {
@@ -29,47 +28,43 @@ class Othello extends React.Component {
       canPlay: true
     }
 
+    pass = () => {
+      if (this.state.player === 1) {
+        this.setState({ player: 2 }, () => {
+          axios.put(`${this.state.endpoint}/pass-game`, {
+            id: this.state.gameId,
+            isPlaying: this.state.player.toString()
+          })
+        })
+      } else {
+        this.setState({ player: 1 }, () => {
+          axios.put(`${this.state.endpoint}/pass-game`, {
+            id: this.state.gameId,
+            isPlaying: this.state.player.toString()
+          })
+        })
+      }
+    }
+
     componentDidMount () {
       const gameId = this.props.location.search.substring(4)
       this.setState({ gameId: gameId })
-      socket = socketIOClient(`${this.state.endpoint}/${gameId}`)
-
       axios.get(`${this.state.endpoint}/get-game/${gameId}`)
         .then(game => {
-          if (game.data.guest) {
-            this.setState({ guest: game.data.guest })
-          }
           this.setState({ board: game.data.gameBoard, loaded: true, player: parseInt(game.data.isPlaying), creator: game.data.createdBy }, () => {
             this.playableSquare()
             this.score()
+            const socket = socketIOClient(`${this.state.endpoint}/${gameId}`)
+            socket.on('updateGame', (data) => {
+              this.setState({ board: data.gameBoard })
+              this.setState({ player: parseInt(data.isPlaying) })
+              this.score()
+            })
           })
         }).catch(err => console.log(err))
-
-      socket.on('disconnect', (data) => {
-        console.log('disconnect')
-        this.setState({ opponentConnected: false })
-      })
-
-      socket.on('updateGame', (data) => {
-        this.setState({ board: data.gameBoard })
-        this.setState({ player: parseInt(data.isPlaying) })
-      })
-
-      socket.on('guest', (data) => {
-        const guest = this.state.guest
-        axios.get(`${this.state.endpoint}/get-user/${data}`)
-          .then(user => {
-            console.log('guest')
-            guest.username = user.data
-            this.setState({ guest: guest })
-          }).catch(err => {
-            console.log(err)
-          })
-      })
     }
 
     componentDidUpdate (previousProps, previousState) {
-      console.log('update', this.state.board)
       if (previousState.board !== this.state.board) {
         console.log('change')
       }
@@ -312,12 +307,13 @@ class Othello extends React.Component {
     parcoursCase = (line, col, direction) => {
       const board = this.state.board
       const caseStatus = board[line][col].status
-      let i, j
+      let i, j, shouldChange
 
       switch (direction) {
         case 'up':
           i = line - 1
-          while (this.checkIfReturn(i, col, direction) && board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide') {
+          shouldChange = this.checkIfReturn(i, col, direction)
+          while (shouldChange && board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide') {
             for (i; i < this.state.min; i++) {
             }
             if (this.state.player === 1) {
@@ -331,7 +327,8 @@ class Othello extends React.Component {
         case 'upLeft':
           i = line - 1
           j = col - 1
-          while (this.checkIfReturn(i, j, direction) && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
+          shouldChange = this.checkIfReturn(i, j, direction)
+          while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
               board[i][j].status = 'white'
             } else if (this.state.player === 2) {
@@ -344,7 +341,8 @@ class Othello extends React.Component {
         case 'upRight':
           i = line - 1
           j = col + 1
-          while (this.checkIfReturn(i, j, direction) && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
+          shouldChange = this.checkIfReturn(i, j, direction)
+          while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
               board[i][j].status = 'white'
             } else if (this.state.player === 2) {
@@ -356,7 +354,8 @@ class Othello extends React.Component {
           return board
         case 'down':
           i = line + 1
-          while (this.checkIfReturn(i, j, direction) && board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide') {
+          shouldChange = this.checkIfReturn(i, col, direction)
+          while (shouldChange && board[i][col] && caseStatus !== board[i][col].status && board[i][col].status !== 'vide') {
             if (this.state.player === 1) {
               board[i][col].status = 'white'
             } else if (this.state.player === 2) {
@@ -368,7 +367,8 @@ class Othello extends React.Component {
         case 'downRight':
           i = line + 1
           j = col + 1
-          while (this.checkIfReturn(i, j, direction) && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
+          shouldChange = this.checkIfReturn(i, j, direction)
+          while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
               board[i][j].status = 'white'
             } else if (this.state.player === 2) {
@@ -381,7 +381,8 @@ class Othello extends React.Component {
         case 'downLeft':
           i = line + 1
           j = col - 1
-          while (this.checkIfReturn(i, j, direction) && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
+          shouldChange = this.checkIfReturn(i, j, direction)
+          while (shouldChange && board[i][j] && caseStatus !== board[i][j].status && board[i][j].status !== 'vide') {
             if (this.state.player === 1) {
               board[i][j].status = 'white'
             } else if (this.state.player === 2) {
@@ -393,7 +394,8 @@ class Othello extends React.Component {
           return board
         case 'left':
           j = col - 1
-          while (this.checkIfReturn(line, j, direction) && board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide') {
+          shouldChange = this.checkIfReturn(line, j, direction)
+          while (shouldChange && board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide') {
             if (this.state.player === 1) {
               board[line][j].status = 'white'
             } else if (this.state.player === 2) {
@@ -404,7 +406,8 @@ class Othello extends React.Component {
           return board
         case 'right':
           j = col + 1
-          while (this.checkIfReturn(line, j, direction) && board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide') {
+          shouldChange = this.checkIfReturn(line, j, direction)
+          while (shouldChange && board[line][j] && caseStatus !== board[line][j].status && board[line][j].status !== 'vide') {
             if (this.state.player === 1) {
               board[line][j].status = 'white'
             } else if (this.state.player === 2) {
@@ -473,7 +476,6 @@ class Othello extends React.Component {
               this.playableSquare()
               this.score()
               this.endGame()
-
               if (cancelRequest !== undefined) {
                 cancelRequest()
               }
@@ -584,10 +586,8 @@ class Othello extends React.Component {
               <aside>
                 <p>{this.state.engame && 'game over'}</p>
                 <p>{this.state.creator.username}:{this.state.player1} {this.state.player === 1 && <img src={black} alt=""/>}</p>
-                {this.state.canPlay === false &&
-                <p onClick={this.changePlayer}>Passer le tour</p>
-                }
-                <p>{this.state.guest.username} :{this.state.player2} {this.state.player === 2 && <img src={white} alt=""/>}</p>
+                <p onClick={this.pass}>Passer le tour</p>
+                <p>Joueur 2 :{this.state.player2} {this.state.player === 2 && <img src={white} alt=""/>}</p>
               </aside>
             </div>
           </section>

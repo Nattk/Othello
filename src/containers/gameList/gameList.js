@@ -10,7 +10,6 @@ class GameList extends React.Component {
       games: '',
       userName: '',
       loaded: false
-
     }
 
     componentDidMount () {
@@ -33,7 +32,6 @@ class GameList extends React.Component {
     goToGame = (gameId) => {
       axios.put(`${this.state.endpoint}/add-guest`, { idGuest: localStorage.getItem('userId'), idGame: gameId })
         .then(guest => {
-          console.log('haha')
           // eslint-disable-next-line react/prop-types
           this.props.history.push({
             pathname: '/othello',
@@ -47,7 +45,6 @@ class GameList extends React.Component {
 
     createGame = () => {
       const board = makeGameBoard()
-      console.log(board)
       axios.post(`${this.state.endpoint}/add-game`, {
         gameBoard: board,
         userId: localStorage.getItem('userId')

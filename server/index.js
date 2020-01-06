@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const env = require('dotenv').config()
+
 // our localhost port
 const port = 4001
 
@@ -16,7 +18,7 @@ app.use(bodyParser.json())
 app.use(gameRoutes)
 app.use(userRoutes)
 
-mongoose.connect('mongodb+srv://Nattan:nattan@othello-sagnv.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect(`${env.parsed.DB}`, {
   useUnifiedTopology: true,
   useNewUrlParser: true
 })

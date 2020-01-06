@@ -19,6 +19,7 @@ exports.getGame = (req, res, next) => {
   const id = req.params.id
   Game.findById(id).populate({ path: 'createdBy', model: User }).populate({ path: 'guest', model: User })
     .then(game => {
+      console.log('connecté')
       io.getIo().of(`/${game._id}`)
         .emit('connected', game)
       res.send(game)
@@ -30,10 +31,25 @@ exports.updateGame = (req, res, next) => {
   const id = req.body.id
   const gameBoard = req.body.gameBoard
   const isPlaying = req.body.isPlaying
-
   Game.findById(id)
     .then(game => {
       game.gameBoard = gameBoard
+      game.isPlaying = isPlaying
+      return game.save()
+    })
+    .then(game => {
+      console.log('saved')
+      io.getIo().of(`/${game._id}`)
+        .emit('updateGame', game)
+    })
+    .catch(err => console.log(err))
+}
+
+exports.passGame = (req, res, next) => {
+  const id = req.body.id
+  const isPlaying = req.body.isPlaying
+  Game.findById(id)
+    .then(game => {
       game.isPlaying = isPlaying
       return game.save()
     })
@@ -43,7 +59,6 @@ exports.updateGame = (req, res, next) => {
     })
     .catch(err => console.log(err))
 }
-
 exports.addGuest = (req, res, next) => {
   const idGuest = req.body.idGuest
   const idGame = req.body.idGame
@@ -54,6 +69,7 @@ exports.addGuest = (req, res, next) => {
       return game.save()
     })
     .then(game => {
+      console.log(io.getIo())
       io.getIo().of(`/${idGame}`)
         .emit('guest', game.guest)
       res.send(game)
