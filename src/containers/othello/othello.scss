@@ -4,22 +4,23 @@
     padding: 1rem;
 }
 
-.game{
-    display:flex;
+.game {
+    display: flex;
     flex-direction: row;
 
-    .board{
-        display:flex;
+    .board {
+        display: flex;
         flex-direction: column;
     }
 
 }
+
 .lines {
     display: flex;
     flex-direction: row;
 }
 
-h1{
+h1 {
     font-family: 'Patua One', cursive;
 }
 
@@ -35,13 +36,13 @@ h1{
     }
 
     &.black {
-        background-image: url('../assets/images/pieceWhite.png'); 
+        background-image: url('../../assets/images/pieceWhite.png');
         background-repeat: no-repeat;
         background-position: center;
     }
 
     &.white {
-        background-image: url('../assets/images/pieceBlack.png'); 
+        background-image: url('../../assets/images/pieceBlack.png');
         background-repeat: no-repeat;
         background-position: center;
     }
