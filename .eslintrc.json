@@ -24,7 +24,7 @@
         "react"
     ],
     "rules": {
-        "no-unmodified-loop-condition": 2
-
+        "no-unmodified-loop-condition": 0,
+        "react/prop-types": 0
     }
 }
